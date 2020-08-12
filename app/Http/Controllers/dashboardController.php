@@ -310,7 +310,7 @@ class dashboardController extends Controller
 
     // Download the Default Certificate Details format file => type : csv 
     public function downloadCsv(){
-        return Storage::download("storage/certificate_details.csv", "certificate_details.csv");
+        return Storage::disk("local")->download("certificate_details.csv");
     }
 
     // Upload Certificate Details
