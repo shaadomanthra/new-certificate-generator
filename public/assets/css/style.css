@@ -1,0 +1,27 @@
+html,body{
+    font-family: 'Baloo Thambi 2', cursive;
+    background: #f7f5e3;
+    padding: 1rem;
+    height: 100%;
+}
+
+.heading{
+    color: #e75d5d;
+}
+
+#social_media_icons i{
+    color: #272727;
+    padding: 0.5rem;
+}
+
+a{
+    color: #000;
+}
+
+a:hover{
+    color: red;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link{
+    background-color: #000;
+}
