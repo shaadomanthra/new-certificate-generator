@@ -1,16 +1,21 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 
 
 // Authentication
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 // Route for Index Page
 Route::get('/','rootController@index');
 
 // ROute for dashboard
-Route::get('/dashboard','dashboardController@dashboard');
+Route::get('/dashboard','dashboardController@dashboard')->middleware('verified');
+
+Route::get('/dashboard/zipMail','dashboardController@zipMail');
+Route::get('/dashboard/zipFiles/{session_key}','dashboardController@zipFiles');
+Route::post('/dashboard/downloadZip','dashboardController@downloadZip');
 
 // Routes for templates
 Route::get('/dashboard/templates', 'dashboardController@templates');
@@ -38,7 +43,10 @@ Route::get('/dashboard/files', 'dashboardController@files');
 Route::post('/dashboard/files/delete_file', 'dashboardController@delete_file');
 Route::post('/dashboard/files/view_delete_template', 'dashboardController@view_delete_template');
 
-Route::get("/dashboard/template_2", "dashboardController@template_2");
+// Bulk Download Images
+Route::post("/dashboard/bulkDownload", "dashboardController@bulkDownload");
+
+Route::get("/dashboard/template_3", "dashboardController@template_3");
 
 // Routes for Certificate view
 Route::get('/{verification_id}','rootController@show_certificate');

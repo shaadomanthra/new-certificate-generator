@@ -108,5 +108,8 @@
         <hr>
         <h6 class="text-muted">Copyright &copy; <a href="https://xplore.co.in" target="_blank" class="text-danger">Xplore</a></h6>
     </footer>
+
+    {{-- Chart js --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 </body>
 </html>

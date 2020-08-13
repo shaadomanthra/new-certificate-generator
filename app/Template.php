@@ -18,6 +18,15 @@ class Template{
 
     // Other Templates
     public function template($data, $user_data){
+
+        $design_location  = Storage::disk('certificate_designs')->getDriver()->getAdapter()->getPathPrefix();
+
+        $design_values = explode("/", $design_location);
+        unset($design_values[sizeof($design_values)-1]);
+        $design_location = implode("/", $design_values);
+        
+        $fonts_location  = Storage::disk('fonts')->getDriver()->getAdapter()->getPathPrefix();
+
         $template_design = $data->template_design;
         $text_align  = $data->text_align;
         $default_line_height = (int) $data->line_height == null ? 100 : $data->line_height;
@@ -122,8 +131,8 @@ class Template{
             $line_height = $default_line_height * $i;
 
             if(!empty($lines[$i])){
-                $img->text($lines[$i], $default_x + $margin_left - $margin_right, $default_y + $margin_top - $margin_bottom + $line_height + $margin_tops[$i], function($font) use($i, $fonts, $sizes, $colors, $default_align){
-                    $font->file("fonts/".$fonts[$i].".ttf");
+                $img->text($lines[$i], $default_x + $margin_left - $margin_right, $default_y + $margin_top - $margin_bottom + $line_height + $margin_tops[$i], function($font) use($i, $fonts_location, $fonts, $sizes, $colors, $default_align){
+                    $font->file($fonts_location.$fonts[$i].".ttf");
                     $font->size((int)$sizes[$i]);
                     $font->color($colors[$i]);
                     $font->align($default_align);
@@ -145,22 +154,25 @@ class Template{
 
         $line_height = 140;
 
-        $img = Image::make("default_conf/assets/designs/template_1.jpg");
+        $default_conf_location  = Storage::disk('default_conf')->getDriver()->getAdapter()->getPathPrefix();
+        $fonts_location  = Storage::disk('fonts')->getDriver()->getAdapter()->getPathPrefix();
+
+        $img = Image::make($default_conf_location."assets/designs/template_1.jpg");
 
         // Logo - 1
-        $logo_1 = Image::make($data->logo_1)->resize(400, null, function($constraint){
+        $logo_1 = Image::make($default_conf_location.$data->logo_1)->resize(400, null, function($constraint){
             $constraint->aspectRatio();
         });
         $img->insert($logo_1, "top-left", 1310, 200);
         // Logo - 2
-        $logo_2 = Image::make($data->logo_2)->resize(400, null, function($constraint){
+        $logo_2 = Image::make($default_conf_location.$data->logo_2)->resize(400, null, function($constraint){
             $constraint->aspectRatio();
         });
         $img->insert($logo_2, "top-left", 1800, 200);
 
         // Title
-        $img->text($data->title, 1752, 769, function($font){
-            $font->file("fonts/Niconne.ttf");
+        $img->text($data->title, 1752, 769, function($font) use($fonts_location){
+            $font->file($fonts_location."Niconne.ttf");
             $font->size(180);
             $font->align('center');
             $font->valign('middle');
@@ -185,8 +197,8 @@ class Template{
 
         // Line - 1
         if(!empty($data->line_1)){
-            $img->text($data->line_1, 1750, 1040, function($font){
-                $font->file("fonts/CalibriRegular.ttf");
+            $img->text($data->line_1, 1750, 1040, function($font) use($fonts_location){
+                $font->file($fonts_location."CalibriRegular.ttf");
                 $font->size(84);
                 $font->align('center');
                 $font->valign('middle');
@@ -195,8 +207,8 @@ class Template{
 
         // Line - 2
         if(!empty($data->line_2)){
-            $img->text($data->line_2, 1750, 1200, function($font){
-                $font->file("fonts/CourgetteRegular.ttf");
+            $img->text($data->line_2, 1750, 1200, function($font) use($fonts_location){
+                $font->file($fonts_location."CourgetteRegular.ttf");
                 $font->size(120);
                 $font->align('center');
                 $font->valign('middle');
@@ -206,8 +218,8 @@ class Template{
 
         // Line - 3
         if(!empty($data->line_3)){
-            $img->text($data->line_3, 1750, 1380, function($font){
-                $font->file("fonts/CalibriRegular.ttf");
+            $img->text($data->line_3, 1750, 1380, function($font) use($fonts_location){
+                $font->file($fonts_location."CalibriRegular.ttf");
                 $font->size(75);
                 $font->align('center');
                 $font->valign('middle');
@@ -216,8 +228,8 @@ class Template{
  
         // Line - 4
         if(!empty($data->line_4)){
-            $img->text($data->line_4, 1750, 1380 + $line_height, function($font){
-                $font->file("fonts/CalibriRegular.ttf");
+            $img->text($data->line_4, 1750, 1380 + $line_height, function($font) use($fonts_location){
+                $font->file($fonts_location."CalibriRegular.ttf");
                 $font->size(75);
                 $font->align('center');
                 $font->valign('middle');
@@ -226,8 +238,8 @@ class Template{
 
         // Line - 5
         if(!empty($data->line_5)){
-            $img->text($data->line_5, 1750, 1380 + $line_height*2, function($font){
-                $font->file("fonts/CalibriRegular.ttf");
+            $img->text($data->line_5, 1750, 1380 + $line_height*2, function($font) use($fonts_location){
+                $font->file($fonts_location."CalibriRegular.ttf");
                 $font->size(75);
                 $font->align('center');
                 $font->valign('middle');
@@ -236,8 +248,8 @@ class Template{
 
         // Line - 6
         if(!empty($data->line_6)){
-            $img->text($data->line_6, 1750, 1380 + $line_height*3, function($font){
-                $font->file("fonts/CalibriRegular.ttf");
+            $img->text($data->line_6, 1750, 1380 + $line_height*3, function($font) use($fonts_location){
+                $font->file($fonts_location."CalibriRegular.ttf");
                 $font->size(75);
                 $font->align('center');
                 $font->valign('middle');
@@ -246,21 +258,21 @@ class Template{
 
 
         // Sign - 1
-        $sign_1 = Image::make($data->sign_1)->resize(500, null, function($constraint){
+        $sign_1 = Image::make($default_conf_location.$data->sign_1)->resize(500, null, function($constraint){
             $constraint->aspectRatio();
         });
         $img->insert($sign_1, "bottom-left" , 600, 220);
 
         // Sign - 2
-        $sign_2 = Image::make($data->sign_2)->resize(500, null, function($constraint){
+        $sign_2 = Image::make($default_conf_location.$data->sign_2)->resize(500, null, function($constraint){
             $constraint->aspectRatio();
         });
         $img->insert($sign_2, "bottom-right" , 670, 275);
 
         // Sign Name - 1
         if(!empty($data->sign_name_1)){
-            $img->text($data->sign_name_1, 850, 1380 + $line_height*3 + 285, function($font){
-                $font->file("fonts/CalibriBold.ttf");
+            $img->text($data->sign_name_1, 850, 1380 + $line_height*3 + 285, function($font) use($fonts_location){
+                $font->file($fonts_location."CalibriBold.ttf");
                 $font->size(65);
                 $font->align('center');
                 $font->valign('middle');
@@ -270,8 +282,8 @@ class Template{
 
         // Sign Info - 1
         if(!empty($data->sign_info_1)){
-            $img->text($data->sign_info_1, 850, 1380 + $line_height*3 + 350, function($font){
-                $font->file("fonts/MontserratRegular.ttf");
+            $img->text($data->sign_info_1, 850, 1380 + $line_height*3 + 350, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratRegular.ttf");
                 $font->size(52);
                 $font->align('center');
                 $font->valign('middle');
@@ -281,8 +293,8 @@ class Template{
 
         // Sign Name - 2
         if(!empty($data->sign_name_2)){
-            $img->text($data->sign_name_2, 2590, 1380 + $line_height*3 + 285, function($font){
-                $font->file("fonts/CalibriBold.ttf");
+            $img->text($data->sign_name_2, 2590, 1380 + $line_height*3 + 285, function($font) use($fonts_location){
+                $font->file($fonts_location."CalibriBold.ttf");
                 $font->size(65);
                 $font->align('center');
                 $font->valign('middle');
@@ -292,8 +304,8 @@ class Template{
 
         // Sign Info - 2
         if(!empty($data->sign_info_2)){
-            $img->text($data->sign_info_2, 2590, 1380 + $line_height*3 + 350, function($font){
-                $font->file("fonts/MontserratRegular.ttf");
+            $img->text($data->sign_info_2, 2590, 1380 + $line_height*3 + 350, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratRegular.ttf");
                 $font->size(52);
                 $font->align('center');
                 $font->valign('middle');
@@ -303,8 +315,8 @@ class Template{
 
         // Info - 1
         if(!empty($data->info_1)){
-            $img->text($data->info_1, 480, 1380 + $line_height*3 + 480, function($font){
-                $font->file("fonts/MontserratRegular.ttf");
+            $img->text($data->info_1, 480, 1380 + $line_height*3 + 480, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratRegular.ttf");
                 $font->size(42);
                 $font->align('center');
                 $font->valign('middle');
@@ -314,8 +326,8 @@ class Template{
 
         // Info - 2
         if(!empty($data->info_2)){
-            $img->text($data->info_2, 2700, 1380 + $line_height*3 + 480, function($font){
-                $font->file("fonts/MontserratRegular.ttf");
+            $img->text($data->info_2, 2700, 1380 + $line_height*3 + 480, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratRegular.ttf");
                 $font->size(42);
                 $font->align('center');
                 $font->valign('middle');
@@ -332,40 +344,42 @@ class Template{
 
         $line_height = 140;
 
-        // $img = Image::make("default_conf/assets/images/template_2.jpg");
-        $img = Image::make("default_conf/assets/designs/template_2.jpg");
+        $default_conf_location  = Storage::disk('default_conf')->getDriver()->getAdapter()->getPathPrefix();
+        $fonts_location  = Storage::disk('fonts')->getDriver()->getAdapter()->getPathPrefix();
+
+        $img = Image::make($default_conf_location."assets/designs/template_2.jpg");
 
         $width = $img->width();
         $height = $img->height();
 
         // Main Logo
-        $main_logo = Image::make($data->main_logo)->resize(1600, null, function($constraint){
+        $main_logo = Image::make($default_conf_location.$data->main_logo)->resize(1600, null, function($constraint){
             $constraint->aspectRatio();
         });
         $img->insert($main_logo, "top-left", 100, -400);
 
         // Logo - 1
-        $logo_1 = Image::make($data->logo_1)->resize(400, null, function($constraint){
+        $logo_1 = Image::make($default_conf_location.$data->logo_1)->resize(400, null, function($constraint){
             $constraint->aspectRatio();
         });
         $img->insert($logo_1, "top-right", 1090, 270);
         
         // Logo - 2
-        $logo_2 = Image::make($data->logo_2)->resize(400, null, function($constraint){
+        $logo_2 = Image::make($default_conf_location.$data->logo_2)->resize(400, null, function($constraint){
             $constraint->aspectRatio();
         });
         $img->insert($logo_2, "top-right", 650, 270);
         
         // Logo 3
-        $logo_3 = Image::make($data->logo_3)->resize(400, null, function($constraint){
+        $logo_3 = Image::make($default_conf_location.$data->logo_3)->resize(400, null, function($constraint){
             $constraint->aspectRatio();
         });
         $img->insert($logo_3, "top-right", 200, 270);
 
         // Title
         $title = Str::of($data->title)->upper();
-        $img->text($title, $width-490, 1125, function($font){
-            $font->file("fonts/MontserratBold.ttf");
+        $img->text($title, $width-490, 1125, function($font) use($fonts_location){
+            $font->file($fonts_location."MontserratBold.ttf");
             $font->size(150);
             $font->align('right');
             $font->valign('middle');
@@ -390,8 +404,8 @@ class Template{
 
         // Line - 1
         if(!empty($data->line_1)){
-            $img->text($data->line_1, $width-310, 1400, function($font){
-                $font->file("fonts/MontserratSemiBold.ttf");
+            $img->text($data->line_1, $width-310, 1400, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratSemiBold.ttf");
                 $font->size(100);
                 $font->align('right');
                 $font->valign('middle');
@@ -400,8 +414,8 @@ class Template{
 
         // Line - 2
         if(!empty($data->line_2)){
-            $img->text($data->line_2, $width-310, 1730, function($font){
-                $font->file("fonts/MontserratBold.ttf");
+            $img->text($data->line_2, $width-310, 1730, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratBold.ttf");
                 $font->size(150);
                 $font->align('right');
                 $font->valign('middle');
@@ -411,8 +425,8 @@ class Template{
         
         // Line - 3
         if(!empty($data->line_3)){
-            $img->text($data->line_3, $width-300, 2090, function($font){
-                $font->file("fonts/MontserratSemiBold.ttf");
+            $img->text($data->line_3, $width-300, 2090, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratSemiBold.ttf");
                 $font->size(94);
                 $font->align('right');
                 $font->valign('middle');
@@ -422,8 +436,8 @@ class Template{
         
         // Line - 4
         if(!empty($data->line_4)){
-            $img->text($data->line_4, $width-300, 2090 + $line_height, function($font){
-                $font->file("fonts/MontserratSemiBold.ttf");
+            $img->text($data->line_4, $width-300, 2090 + $line_height, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratSemiBold.ttf");
                 $font->size(94);
                 $font->align('right');
                 $font->valign('middle');
@@ -432,8 +446,8 @@ class Template{
         }
         // Line - 5
         if(!empty($data->line_5)){
-            $img->text($data->line_5, $width-300, 2090 + $line_height*2, function($font){
-                $font->file("fonts/MontserratSemiBold.ttf");
+            $img->text($data->line_5, $width-300, 2090 + $line_height*2, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratSemiBold.ttf");
                 $font->size(94);
                 $font->align('right');
                 $font->valign('middle');
@@ -442,8 +456,8 @@ class Template{
         }
         // Line - 6
         if(!empty($data->line_6)){
-            $img->text($data->line_6, $width-300, 2090 + $line_height*3, function($font){
-                $font->file("fonts/MontserratSemiBold.ttf");
+            $img->text($data->line_6, $width-300, 2090 + $line_height*3, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratSemiBold.ttf");
                 $font->size(94);
                 $font->align('right');
                 $font->valign('middle');
@@ -452,8 +466,8 @@ class Template{
         }
         // Line - 7
         if(!empty($data->line_7)){
-            $img->text($data->line_7, $width-300, 2090 + $line_height*4, function($font){
-                $font->file("fonts/MontserratSemiBold.ttf");
+            $img->text($data->line_7, $width-300, 2090 + $line_height*4, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratSemiBold.ttf");
                 $font->size(94);
                 $font->align('right');
                 $font->valign('middle');
@@ -463,33 +477,33 @@ class Template{
 
 
         // Sign - 1
-        $sign_1 = Image::make($data->sign_1)->resize(600, null, function($constraint){
+        $sign_1 = Image::make($default_conf_location.$data->sign_1)->resize(600, null, function($constraint){
             $constraint->aspectRatio();
         });
         $img->insert($sign_1, "bottom-left" ,1450, 500);
 
         // Sign - 2
-        $sign_2 = Image::make($data->sign_2)->resize(500, null, function($constraint){
+        $sign_2 = Image::make($default_conf_location.$data->sign_2)->resize(500, null, function($constraint){
             $constraint->aspectRatio();
         });
         $img->insert($sign_2, "bottom-left" , 2500, 550);
 
         // Sign - 3
-        $sign_3 = Image::make($data->sign_3)->resize(500, null, function($constraint){
+        $sign_3 = Image::make($default_conf_location.$data->sign_3)->resize(500, null, function($constraint){
             $constraint->aspectRatio();
         });
         $img->insert($sign_3, "bottom-right" , 1150, 550);
 
         // Sign - 4
-        $sign_4 = Image::make($data->sign_4)->resize(500, null, function($constraint){
+        $sign_4 = Image::make($default_conf_location.$data->sign_4)->resize(500, null, function($constraint){
             $constraint->aspectRatio();
         });
         $img->insert($sign_4, "bottom-right" , 300, 550);
 
         // Sign Name - 1
         if(!empty($data->sign_name_1)){
-            $img->text($data->sign_name_1, 1720, $height-560, function($font){
-                $font->file("fonts/MontserratBold.ttf");
+            $img->text($data->sign_name_1, 1720, $height-560, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratBold.ttf");
                 $font->size(60);
                 $font->align('center');
                 $font->valign('middle');
@@ -499,8 +513,8 @@ class Template{
         
         // Sign Info - 1
         if(!empty($data->sign_info_1)){
-            $img->text($data->sign_info_1, 1720, $height-480, function($font){
-                $font->file("fonts/MontserratSemiBold.ttf");
+            $img->text($data->sign_info_1, 1720, $height-480, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratSemiBold.ttf");
                 $font->size(55);
                 $font->align('center');
                 $font->valign('middle');
@@ -510,8 +524,8 @@ class Template{
 
         // Sign Name - 2
         if(!empty($data->sign_name_2)){
-            $img->text($data->sign_name_2, 2740, $height-560, function($font){
-                $font->file("fonts/MontserratBold.ttf");
+            $img->text($data->sign_name_2, 2740, $height-560, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratBold.ttf");
                 $font->size(60);
                 $font->align('center');
                 $font->valign('middle');
@@ -521,8 +535,8 @@ class Template{
         
         // Sign Info - 2
         if(!empty($data->sign_info_2)){
-            $img->text($data->sign_info_2, 2740, $height-480, function($font){
-                $font->file("fonts/MontserratSemiBold.ttf");
+            $img->text($data->sign_info_2, 2740, $height-480, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratSemiBold.ttf");
                 $font->size(55);
                 $font->align('center');
                 $font->valign('middle');
@@ -532,8 +546,8 @@ class Template{
 
         // Sign Name - 3
         if(!empty($data->sign_name_3)){
-            $img->text($data->sign_name_3, 3565, $height-560, function($font){
-                $font->file("fonts/MontserratBold.ttf");
+            $img->text($data->sign_name_3, 3565, $height-560, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratBold.ttf");
                 $font->size(60);
                 $font->align('center');
                 $font->valign('middle');
@@ -543,8 +557,8 @@ class Template{
         
         // Sign Info - 3
         if(!empty($data->sign_info_3)){
-            $img->text($data->sign_info_3, 3565, $height-480, function($font){
-                $font->file("fonts/MontserratSemiBold.ttf");
+            $img->text($data->sign_info_3, 3565, $height-480, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratSemiBold.ttf");
                 $font->size(55);
                 $font->align('center');
                 $font->valign('middle');
@@ -554,8 +568,8 @@ class Template{
 
         // Sign Name - 4
         if(!empty($data->sign_name_4)){
-            $img->text($data->sign_name_4, 4380, $height-560, function($font){
-                $font->file("fonts/MontserratBold.ttf");
+            $img->text($data->sign_name_4, 4380, $height-560, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratBold.ttf");
                 $font->size(60);
                 $font->align('center');
                 $font->valign('middle');
@@ -565,8 +579,8 @@ class Template{
         
         // Sign Info - 4
         if(!empty($data->sign_info_4)){
-            $img->text($data->sign_info_4, 4380, $height-480, function($font){
-                $font->file("fonts/MontserratSemiBold.ttf");
+            $img->text($data->sign_info_4, 4380, $height-480, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratSemiBold.ttf");
                 $font->size(55);
                 $font->align('center');
                 $font->valign('middle');
@@ -583,18 +597,20 @@ class Template{
     // Default Template 3
     public function template_3($data, $user_data){
 
+        $default_conf_location  = Storage::disk('default_conf')->getDriver()->getAdapter()->getPathPrefix();
+        $fonts_location  = Storage::disk('fonts')->getDriver()->getAdapter()->getPathPrefix();
+
         $line_height = 40;
         $y_offset = 220;
 
-        $img = Image::make("default_conf/assets/designs/template_3.jpg");
+        $img = Image::make($default_conf_location."assets/designs/template_3.jpg");
 
         $width =  $img->width();
         $height = $img->height();
 
-
         // Logo
         if(!empty($data->logo)){
-            $logo = Image::make($data->logo)->resize(150, null, function($constraint){
+            $logo = Image::make($default_conf_location.$data->logo)->resize(150, null, function($constraint){
                 $constraint->aspectRatio();
             });
             $img->insert($logo, "top-left", 50, 40);
@@ -602,8 +618,8 @@ class Template{
 
         // Title
         $title = Str::of($data->title)->upper();
-        $img->text($title, 385, 120, function($font){
-            $font->file("fonts/MontserratBold.ttf");
+        $img->text($title, 385, 120, function($font) use($fonts_location){
+            $font->file($fonts_location."MontserratBold.ttf");
             $font->size(34);
             $font->align('left');
             $font->valign('middle');
@@ -628,8 +644,8 @@ class Template{
         
         // Line - 1
         if(!empty($data->line_1)){
-            $img->text($data->line_1, 385, $y_offset, function($font){
-                $font->file("fonts/MontserratSemiBold.ttf");
+            $img->text($data->line_1, 385, $y_offset, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratSemiBold.ttf");
                 $font->size(20);
                 $font->align('left');
                 $font->valign('middle');
@@ -640,8 +656,8 @@ class Template{
         // Line - 2
         $name = Str::of($data->line_2)->upper();
         if(!empty($data->line_2)){
-            $img->text($name, 385, $y_offset + $line_height +20, function($font){
-                $font->file("fonts/MontserratBold.ttf");
+            $img->text($name, 385, $y_offset + $line_height +20, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratBold.ttf");
                 $font->size(30);
                 $font->align('left');
                 $font->valign('middle');
@@ -651,8 +667,8 @@ class Template{
 
         // Line - 3
         if(!empty($data->line_3)){
-            $img->text($data->line_3, 385, $y_offset + ($line_height*2) +30, function($font){
-                $font->file("fonts/MontserratSemiBold.ttf");
+            $img->text($data->line_3, 385, $y_offset + ($line_height*2) +30, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratSemiBold.ttf");
                 $font->size(20);
                 $font->align('left');
                 $font->valign('middle');
@@ -662,8 +678,8 @@ class Template{
 
         // Line - 4
         if(!empty($data->line_4)){
-            $img->text($data->line_4, 385, $y_offset + ($line_height*3) +30, function($font){
-                $font->file("fonts/MontserratSemiBold.ttf");
+            $img->text($data->line_4, 385, $y_offset + ($line_height*3) +30, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratSemiBold.ttf");
                 $font->size(20);
                 $font->align('left');
                 $font->valign('middle');
@@ -672,8 +688,8 @@ class Template{
         }
         // Line - 5
         if(!empty($data->line_5)){
-            $img->text($data->line_5, 385, $y_offset + ($line_height*4) +30, function($font){
-                $font->file("fonts/MontserratSemiBold.ttf");
+            $img->text($data->line_5, 385, $y_offset + ($line_height*4) +30, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratSemiBold.ttf");
                 $font->size(20);
                 $font->align('left');
                 $font->valign('middle');
@@ -682,8 +698,8 @@ class Template{
         }
         // Line - 6
         if(!empty($data->line_6)){
-            $img->text($data->line_6, 385, $y_offset + ($line_height*5) +30, function($font){
-                $font->file("fonts/MontserratSemiBold.ttf");
+            $img->text($data->line_6, 385, $y_offset + ($line_height*5) +30, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratSemiBold.ttf");
                 $font->size(20);
                 $font->align('left');
                 $font->valign('middle');
@@ -693,7 +709,7 @@ class Template{
 
         // Sign - 1
         if(!empty($data->sign_1)){
-            $sign_1 = Image::make($data->sign_1)->resize(200, null, function($constraint){
+            $sign_1 = Image::make($default_conf_location.$data->sign_1)->resize(200, null, function($constraint){
                 $constraint->aspectRatio();
             });
             $img->insert($sign_1, "bottom-left" , 390, 70);
@@ -701,7 +717,7 @@ class Template{
 
         // Sign - 2
         if(!empty($data->sign_2)){
-            $sign_2 = Image::make($data->sign_2)->resize(200, null, function($constraint){
+            $sign_2 = Image::make($default_conf_location.$data->sign_2)->resize(200, null, function($constraint){
                 $constraint->aspectRatio();
             });
             $img->insert($sign_2, "bottom-right" , 120, 90);
@@ -710,8 +726,8 @@ class Template{
         // Sign Name - 1
         $name = Str::of($data->sign_name_1)->upper();
         if(!empty($data->sign_name_1)){
-            $img->text($name, 385, $height-110, function($font){
-                $font->file("fonts/MontserratBold.ttf");
+            $img->text($name, 385, $height-110, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratBold.ttf");
                 $font->size(20);
                 $font->align('left');
                 $font->valign('middle');
@@ -722,8 +738,8 @@ class Template{
 
         // Sign Info - 1
         if(!empty($data->sign_info_1)){
-            $img->text($data->sign_info_1, 385, $height-80, function($font){
-                $font->file("fonts/MontserratRegular.ttf");
+            $img->text($data->sign_info_1, 385, $height-80, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratRegular.ttf");
                 $font->size(13);
                 $font->align('left');
                 $font->valign('middle');
@@ -734,8 +750,8 @@ class Template{
         // Sign Name - 2
         $name = Str::of($data->sign_name_2)->upper();
         if(!empty($data->sign_name_2)){
-            $img->text($name, 385+335, $height-110, function($font){
-                $font->file("fonts/MontserratBold.ttf");
+            $img->text($name, 385+335, $height-110, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratBold.ttf");
                 $font->size(20);
                 $font->align('left');
                 $font->valign('middle');
@@ -746,8 +762,8 @@ class Template{
 
         // Sign Info - 2
         if(!empty($data->sign_info_2)){
-            $img->text($data->sign_info_2, 385+335, $height-80, function($font){
-                $font->file("fonts/MontserratRegular.ttf");
+            $img->text($data->sign_info_2, 385+335, $height-80, function($font) use($fonts_location){
+                $font->file($fonts_location."MontserratRegular.ttf");
                 $font->size(13);
                 $font->align('left');
                 $font->valign('middle');

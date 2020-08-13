@@ -9,6 +9,10 @@ use App\CertificateDetails;
 use App\Template;
 use App\CertificateTemplates;
 
+// Job
+use App\Jobs\BulkDownload;
+use App\Jobs\ZipAndMailFiles;
+
 use Illuminate\Support\Facades\DB;
 
 // Storage
@@ -20,9 +24,9 @@ use Image;
 // String Functions
 use Illuminate\Support\Str;
 
-// Laravel Charts (Chartisan)
-use ConsoleTVs\Charts\BaseChart;
-use Chartisan\PHP\Chartisan;
+
+// Zip Archive
+use ZipArchive;
 
 
 class dashboardController extends Controller
@@ -187,7 +191,7 @@ class dashboardController extends Controller
 
             CertificateTemplates::insert($query);
 
-            return view("pages.dashboard.dashboard")->with("success", "New Template Created");
+            return redirect("/dashboard");
         }
 
     }
@@ -288,7 +292,7 @@ class dashboardController extends Controller
 
             CertificateTemplates::insert($query);
 
-            return view("pages.dashboard.dashboard")->with("success", "New Template Created");
+            return redirect("/dashboard");
         }
     }
     // ------ End Templates ------
@@ -668,6 +672,54 @@ class dashboardController extends Controller
         }
     }
 
+
+    // Bulk Download Images and mail it
+    public function bulkDownload(Request $request){
+        $session = $request->session()->all();
+        $session_key = $session["_token"];
+        $clients = DB::table("certificate_details")->distinct()->get("client");
+        $activities = DB::table("certificate_details")->distinct()->get("activity");
+        if($request->download_action == "view"){
+            return view("pages.dashboard.bulkDownload")->with("clients", $clients)->with("activities", $activities);
+        }
+        else if($request->download_action == "download"){
+            $query = ["client"=>$request->client, "activity"=>$request->activity];
+            $records = CertificateDetails::where($query)->get();
+            
+            $seconds = sizeof($records);
+            $minutes = $seconds/60;
+
+            foreach($records as $record){
+                $record = json_decode(json_encode($record));
+                BulkDownload::dispatch($record, $session_key);
+            }
+            ZipAndMailFiles::dispatch($session_key, auth()->user()->email)->delay(now()->addMinutes($minutes+1));
+            return view("pages.dashboard.bulkDownload")->with("clients", $clients)->with("activities", $activities);
+        }
+    }
+
+    public function zipFiles($session_key){
+        $exists = Storage::disk("tmp")->exists($session_key.".zip");
+        if($exists){
+            $size = Storage::disk("tmp")->size($session_key.".zip");
+            $size = round($size/1000000, 2);
+            return view("pages.dashboard.downloadZip")->with("session_key", $session_key)->with("size", $size);
+        }
+        else{
+            return view("pages.dashboard.downloadZip")->with("info", "File Session Expired");
+        }
+    }
+
+    public function downloadZip(Request $request){
+        $session_key = $request->session_key;
+        return response()->download("tmp/".$session_key.".zip", "certificates.zip")->deleteFileAfterSend();
+    }
+
+    public function zipMail(){
+        return view("pages.dashboard.zipMail");
+    }
+
+    // Miscelleanous
     public function get_names(){
         $certificates = Storage::files('certificate_designs');
         $fonts = Storage::files('fonts');
@@ -697,15 +749,19 @@ class dashboardController extends Controller
         return $data;
     }
 
-    public function template_2(){
-        $file = json_decode(Storage::disk("default_conf")->get("template_2.json"));
-        // Get Default user data
-        $user_data = json_decode(Storage::disk("default_conf")->get("user.json"));
+    public function template_3(){
+        // $file = json_decode(Storage::disk("default_conf")->get("template_3.json"));
+        // // Get Default user data
+        // $user_data = json_decode(Storage::disk("default_conf")->get("user.json"));
 
-        $template = new Template();
-        $img = $template->template_2($file, $user_data);
+        // $template = new Template();
+        // $img = $template->template_3($file, $user_data);
 
-        return view("pages.dashboard.template")->with("img", $img);
+
+        // print_r(auth()->user()->email);
+
+        return view("pages.dashboard.template");
+
     }
 
     // Generates a random token

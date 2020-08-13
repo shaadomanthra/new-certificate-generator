@@ -103,6 +103,12 @@ return [
             'url' => env('APP_URL').'/signatures',
             'visibility' => 'public',
         ],
+        'tmp' => [
+            'driver' => 'local',
+            'root' => storage_path('app/tmp'),
+            'url' => env('APP_URL').'/tmp',
+            'visibility' => 'public',
+        ],
     ],
 
     /*
@@ -124,7 +130,7 @@ return [
         public_path('default_conf') => storage_path('app/default_conf'),
         public_path('logos') => storage_path('app/logos'),
         public_path('signatures') => storage_path('app/signatures'),
-
+        public_path('tmp') => storage_path('app/tmp'),
     ],
 
 ];

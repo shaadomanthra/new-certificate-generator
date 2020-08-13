@@ -100,7 +100,7 @@
                         <button class="btn btn-danger d-block mt-3" type="submit">Upload</button>
                     </form>
                     <hr class="bg-white mt-5">
-                    <p class="p-0 m-0">Download the CSV template and add data to it. <a href="downloadCsv" class="btn btn-warning btn-sm ml-2">Download</a></p>
+                    <p class="p-0 m-0 d-flex align-items-center justify-content-start"><i class="fas fa-file-csv text-danger fa-2x mr-2 border border-white p-2 rounded-lg"></i> Download the CSV template and add data to it. <a href="downloadCsv" class="btn btn-warning btn-sm ml-2">Download</a></p>
                 </div>
             </div>
             <div class="tab-pane fade" id="pills-font" role="tabpanel" aria-labelledby="pills-contact-tab">
