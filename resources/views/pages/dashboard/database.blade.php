@@ -2,17 +2,19 @@
 
 @section('content')
 
-    @if($info ?? "")
-        <div class="alert alert-danger" role="alert">
-            <h6>{{$info}}</h6>
-        </div>
-    @endif
+    <div class="container">
+        @if($info ?? "")
+            <div class="alert alert-danger" role="alert">
+                <h6>{{$info}}</h6>
+            </div>
+        @endif
 
-    @if($success ?? "")
-        <div class="alert alert-success" role="alert">
-            <h6>{!! $success !!}</h6>
-        </div>
-    @endif
+        @if($success ?? "")
+            <div class="alert alert-success" role="alert">
+                <h6>{!! $success !!}</h6>
+            </div>
+        @endif
+    </div>
 
     <div class="container">
         <div class="row d-flex justify-content-center align-items-center">

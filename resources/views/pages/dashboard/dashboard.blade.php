@@ -2,20 +2,22 @@
 
 @section('content')
 
-    @if($info ?? "")
-        <div class="alert alert-danger mb-5" role="alert">
-            {{$info}}
-        </div>
-    @endif
-    @if($success ?? "")
-        <div class="alert alert-success mb-5" role="alert">
-            <h6>{{$success}}</h6>
-        </div>
-    @endif
+    <div class="container">
+        @if($info ?? "")
+            <div class="alert alert-danger mb-5" role="alert">
+                {{$info}}
+            </div>
+        @endif
+        @if($success ?? "")
+            <div class="alert alert-success mb-5" role="alert">
+                <h6>{{$success}}</h6>
+            </div>
+        @endif
 
-    <div class="container text-center">
-        <div class='d-flex justify-content-center mb-5'>
-            <img src="{{ asset('assets/images/undraw_dashboard.svg') }}" class="img-fluid" width="500">
+        <div class="container text-center">
+            <div class='d-flex justify-content-center mb-5'>
+                <img src="{{ asset('assets/images/undraw_dashboard.svg') }}" class="img-fluid" width="500">
+            </div>
         </div>
     </div>
 
@@ -28,7 +30,7 @@
             </div>
             <div class="bg-dark text-white p-3 rounded-lg" style="width: 18rem; box-shadow: 3px 6px 10px #fd9084">
                 <h5><span class="text-danger">Upload</span> files to the Storage</h5>
-                <a href="/dashboard/upload" class="btn btn-outline-light mt-4"><i class="fas fa-upload mr-1"></i> Upload</a>
+                <a href="/dashboard/upload" class="btn btn-outline-light mt-5"><i class="fas fa-upload mr-1"></i> Upload</a>
             </div>
             <div class="bg-dark text-white p-3 rounded-lg" style="width: 18rem; box-shadow: 3px 6px 10px #fd9084">
                 <h5>Search, Edit & Delete <span class="text-danger">database</span> records</h5>

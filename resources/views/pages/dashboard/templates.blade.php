@@ -16,19 +16,21 @@
 
     </script>
 
-    @if ($info ?? "")
-        <div class="alert alert-danger">
-            <h6>{{ $info }}</h6>
-        </div>
-    @endif
+    <div class="container">
+        @if ($info ?? "")
+            <div class="alert alert-danger">
+                <h6>{{ $info }}</h6>
+            </div>
+        @endif
 
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            @foreach ($errors->all() as $error)
-                <h6>{{ $error }}</h6>
-            @endforeach
-        </div>
-    @endif
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                @foreach ($errors->all() as $error)
+                    <h6>{{ $error }}</h6>
+                @endforeach
+            </div>
+        @endif
+    </div>
 
     <div class="row mt-5">
         <div class="col-6 px-5 border-right border-dark">

@@ -76,13 +76,13 @@ class BulkDownload implements ShouldQueue
             }
             else{
                 $method = $template_name[1]."_".$template_name[2];
-                $template_data = Storage::disk("certificate_templates")->get($template_name[0]."_".$method.".json");
+                $template_data = json_decode(Storage::disk("certificate_templates")->get($template_name[0]."_".$method.".json"));
                 $img = $template->$method($template_data, $record);
             }
         }
         else{
-            $template_data = Storage::disk("certificate_templates")->get($original_template_name.".json");
-            $img = $template->$method($template_data, $record);
+            $template_data = json_decode(Storage::disk("certificate_templates")->get($original_template_name.".json"));
+            $img = $template->template($template_data, $record);
         }
         $img = Image::make($img);
 
@@ -98,8 +98,6 @@ class BulkDownload implements ShouldQueue
 
         $tmp_location  = Storage::disk('tmp')->getDriver()->getAdapter()->getPathPrefix();
 
-        // $tmp_location = storage_path("tmp/".$session_key);
-
-        $pdf->Output('F', $tmp_location.$session_key."/".$name."-".$record->verification_id.".pdf");
+        $pdf->Output('F', $tmp_location.$session_key."/".$record->name."-".$record->verification_id.".pdf");
     }
 }

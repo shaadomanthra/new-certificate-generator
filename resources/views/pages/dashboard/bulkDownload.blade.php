@@ -2,6 +2,20 @@
 
 @section("content")
 
+    <div class="container">
+        @if($info ?? "")
+            <div class="alert alert-danger" role="alert">
+                <h6>{{$info}}</h6>
+            </div>
+        @endif
+
+        @if($success ?? "")
+            <div class="alert alert-success" role="alert">
+                <h6>{!! $success !!}</h6>
+            </div>
+        @endif
+    </div>
+
     <div class="container bg-dark p-3 rounded-lg text-white">
         <h3 class="text-center my-3">Bulk Download Certificates</h3>
         <form action="/dashboard/bulkDownload" method="POST">

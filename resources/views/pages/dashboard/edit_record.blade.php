@@ -6,22 +6,9 @@
         <h4 class="text-center mt-3 text-white">Verification ID : <span class="text-warning">{{$record->verification_id}}</span></h4>
         <form action="{{$record->verification_id}}" method="POST">
             @csrf
-            <div class="row mt-5">
-                <div class="col-6">
-                    <label class="font-weight-bold">Template Name</label>
-                    <select class="custom-select" name="template_name">
-                        <option value="default_template_1" {{$record->template == "default_template_1" ? "selected" : ""}}>default_template_1</option>
-                        <option value="default_template_2" {{$record->template == "default_template_1" ? "selected" : ""}}>default_template_2</option>
-                        <option value="default_template_3" {{$record->template == "default_template_1" ? "selected" : ""}}>default_template_3</option>
-                        @foreach($templates as $t)
-                            <option value="{{$t}}" {{$record->template == $t ? "selected" : ""}}>{{$t}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-6">
-                    <label class="font-weight-bold">Client</label>
-                    <input type="text" class="form-control" value="{{$record->client}}" name="client">
-                </div>
+            <div class="mt-5">
+                <label class="font-weight-bold">Client</label>
+                <input type="text" class="form-control" value="{{$record->client}}" name="client">
             </div>
 
             <label class="font-weight-bold mt-3">Name</label>

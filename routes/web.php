@@ -10,10 +10,10 @@ Auth::routes(['verify' => true]);
 // Route for Index Page
 Route::get('/','rootController@index');
 
-// ROute for dashboard
+// Route for dashboard
 Route::get('/dashboard','dashboardController@dashboard')->middleware('verified');
 
-Route::get('/dashboard/zipMail','dashboardController@zipMail');
+// Routes for Bulk Download
 Route::get('/dashboard/zipFiles/{session_key}','dashboardController@zipFiles');
 Route::post('/dashboard/downloadZip','dashboardController@downloadZip');
 
