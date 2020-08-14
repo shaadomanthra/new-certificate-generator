@@ -1,0 +1,18 @@
+{
+    "logo": "",
+    "title": "Certificate of Achievement",
+    "line_1": "This is to certify that",
+    "line_2": "@name",
+    "line_3": "of @college",
+    "line_4": "has successfully completed @activity in,",
+    "line_5": "@track organized by Xplore",
+    "line_6": "from @start_date to @end_date",
+    "sign_1": "",
+    "sign_2": "",
+    "sign_name_1": "Chandra Dasaka",
+    "sign_name_2": "Sai Krishna",
+    "sign_info_1": "Chairman, CSI Hyderabad Chapter",
+    "sign_info_2": "Chairman, Global Cyber Security Forum",
+    "info_1": "Verification ID: @verification_id",
+    "info_2": "Verification URL: https://certificate.xplore.co.in"
+}
