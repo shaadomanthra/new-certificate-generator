@@ -41,9 +41,9 @@
       @endif
     </div>
 
-    <div>
+    {{-- <div>
       <p class="mt-4">Want to create a new account? <a href="/register" class="font-weight-bold text-danger">Register</a></p>
-    </div>
+    </div> --}}
   </form>
 </div>
 

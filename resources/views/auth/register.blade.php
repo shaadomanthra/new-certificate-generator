@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="container" style="max-width: 30rem;">
+    {{-- <div class="container" style="max-width: 30rem;">
         <form method="POST" action="{{ route('register') }}" class="form-signin mt-5">
         @csrf
             <h1 class="text-center text-danger mb-3">{{ __('Register') }}</h1>
@@ -46,6 +46,10 @@
             
             <p class="mt-4">Already have an account? <a href="/login" class="font-weight-bold text-danger">Login</a></p>
         </form>
+    </div> --}}
+
+    <div class="container bg-dark text-danger p-3 text-center rounded-lg mt-5">
+        <h3>Register option is not available anymore</h3>
     </div>
 
 @endsection()
