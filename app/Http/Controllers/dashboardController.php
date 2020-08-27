@@ -570,19 +570,19 @@ class dashboardController extends Controller
         else if($request->edit_option == "update"){
 
             //Values to modify 
-            $query = ['client'=>$request->client, 'activity'=>$request->activity, 'name'=>$request->name, 'gender'=>$request->gender, 'email'=>$request->email, 'mobile_number'=>$request->mobile_number, 'college'=>$request->college, 'track'=>$request->track, 'start_date'=>$request->start_date, 'end_date'=>$request->end_date, 'issued_date'=>$request->issued_date, 'percentage'=>$request->percentage, 'template'=>$request->template_name];
+            $query = ['client'=>$request->client, 'activity'=>$request->activity, 'name'=>$request->name, 'gender'=>$request->gender, 'email'=>$request->email, 'mobile_number'=>$request->mobile_number, 'college'=>$request->college, 'track'=>$request->track, 'start_date'=>$request->start_date, 'end_date'=>$request->end_date, 'issued_date'=>$request->issued_date, 'percentage'=>$request->percentage];
 
             $status = DB::table("certificate_details")->where("verification_id", $verification_id)->update($query);
 
             // If status = 1
             if($status){
                 $records = DB::table("certificate_details")->simplePaginate(30);
-                return view("pages.dashboard.database")->with("success", "Record Updated Successfully")->with('records', $records)->with("links", "show");
+                return redirect("/dashboard/database");
             }
             // If status = 0
             else{
                 $records = DB::table("certificate_details")->simplePaginate(30);
-                return view("pages.dashboard.database")->with("info", "Unable to update record")->with('records', $records)->with("links", "show");
+                return redirect("/dashboard/database");
             }
         }
 
@@ -597,7 +597,7 @@ class dashboardController extends Controller
         else if($request->delete_option == "confirm_delete"){
             DB::table("certificate_details")->where("verification_id", $verification_id)->delete();
             $records = DB::table("certificate_details")->simplePaginate(30);
-            return view("pages.dashboard.database")->with("success", "Record deleted Successfully")->with('records', $records)->with("links", "show");
+            return redirect("/dashboard/database");
         }
     }
 
