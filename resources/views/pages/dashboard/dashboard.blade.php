@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="container">
+    <div class="container d-flex justify-content-center mb-5">
         @if($info ?? "")
             <div class="alert alert-danger mb-5" role="alert">
                 {{$info}}
@@ -14,11 +14,7 @@
             </div>
         @endif
 
-        <div class="container text-center">
-            <div class='d-flex justify-content-center mb-5'>
-                <img src="{{ asset('assets/images/undraw_dashboard.svg') }}" class="img-fluid" width="500">
-            </div>
-        </div>
+        <img src="{{ asset('assets/images/undraw_dashboard.svg') }}" class="img-fluid" width="500">
     </div>
 
     <div class="container-fluid" style="margin-top:6rem;">

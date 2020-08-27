@@ -75,6 +75,9 @@
                                 <li class="nav-item">
                                     <a href="/dashboard" class="nav-link text-dark font-weight-bold">Dashboard</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="/help" class="nav-link text-dark font-weight-bold">Help</a>
+                                </li>
                                 <li class="nav-item dropright">
                                     <a id="navbarDropdown" class="nav-link dropdown-toggle text-danger" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                         {{ Auth::user()->name }} <span class="caret"></span>

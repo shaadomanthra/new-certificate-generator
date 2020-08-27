@@ -13,6 +13,9 @@ Route::get('/','rootController@index');
 // Route for dashboard
 Route::get('/dashboard','dashboardController@dashboard')->middleware('verified');
 
+// Route for Help
+Route::get('/help','dashboardController@help')->middleware('verified');
+
 // Routes for Bulk Download
 Route::get('/dashboard/zipFiles/{session_key}','dashboardController@zipFiles');
 Route::post('/dashboard/downloadZip','dashboardController@downloadZip');

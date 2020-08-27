@@ -60,6 +60,12 @@ class dashboardController extends Controller
     }
     // ------ End Dashboard ------ 
 
+    // Help Section
+    public function help(){
+        return view("pages.help");
+    }
+    // End Help
+
     // ------ Templates page ------
     // gets the images inside assets and send that to the Templates page 
     public function templates(){
