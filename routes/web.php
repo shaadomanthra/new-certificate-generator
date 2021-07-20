@@ -4,6 +4,11 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 
 
+// Route::get("/change", function(){
+//     return view("pages.change");
+// });
+// Route::post("/change", "rootController@change");
+
 // Authentication
 Auth::routes(['verify' => true]);
 
@@ -12,6 +17,8 @@ Route::get('/','rootController@index');
 
 // Route for dashboard
 Route::get('/dashboard','dashboardController@dashboard')->middleware('verified');
+// Get the ids CSV File
+Route::get('/dashboard/downloadIds','dashboardController@downloadIds')->middleware('verified');
 
 // Route for Help
 Route::get('/help','dashboardController@help')->middleware('verified');
@@ -56,4 +63,3 @@ Route::get('/{verification_id}','rootController@show_certificate');
 
 // Route to download certificate
 Route::post("/download_certificate", 'rootController@download_certificate');
-

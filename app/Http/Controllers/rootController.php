@@ -20,6 +20,9 @@ use Codedge\Fpdf\Fpdf\Fpdf;
 use App\CertificateDetails;
 use App\Template;
 
+use Illuminate\Support\Facades\DB;
+
+
 class rootController extends Controller
 {
     
@@ -29,12 +32,11 @@ class rootController extends Controller
 
     // Displays the certificate
     public function show_certificate($verification_id){
-        $user_data = CertificateDetails::where('verification_id', $verification_id)->get();
-        $user_data = $user_data[0];
-
         $count = (CertificateDetails::where('verification_id', $verification_id)->get())->count();
 
         if($count > 0){
+            $user_data = CertificateDetails::where('verification_id', $verification_id)->get();
+            $user_data = $user_data[0];
             $img = $this->get_certificate($verification_id, $user_data);
             return view("pages.certificate")->with("img", $img)->with("user_data", $user_data)->with("verification_id", $verification_id);
         }
@@ -88,5 +90,21 @@ class rootController extends Controller
         }
         
         return $img;
+    }
+
+    public function change(Request $request){
+        
+        // Get temporary path/file name
+        $filename = $request->file('update_details')->getPathName();
+
+        // create an array from uploaded csv file data 
+        $csvAsArray = array_map('str_getcsv', file($filename));
+
+        foreach($csvAsArray as $data){
+            // print_r($data);
+            DB::table('certificate_details')->where("mobile_number", $data[2])->update(["roll_number" => $data[0]]);
+            // $test = CertificateDetails::where("mobile_number", $data[1])->get();
+            // ddd($test);
+        }
     }
 }

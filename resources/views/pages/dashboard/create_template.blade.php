@@ -84,6 +84,7 @@
 							<div class="py-2 bg-white text-dark rounded-lg d-flex justify-content-around align-items-center">
 								<p class="m-0 p-0 text-danger font-weight-bold">@verification_id</p>
 								<p class="m-0 p-0 text-danger font-weight-bold">@name</p>
+								<p class="m-0 p-0 text-danger font-weight-bold">@roll_number</p>
 								<p class="m-0 p-0 text-danger font-weight-bold">@college</p>
 								<p class="m-0 p-0 text-danger font-weight-bold">@activity</p>
 								<p class="m-0 p-0 text-danger font-weight-bold">@track</p>

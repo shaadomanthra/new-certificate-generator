@@ -77,6 +77,7 @@
         <div class="py-2 border border-white rounded-lg d-flex justify-content-around align-items-center">
             <p class="m-0 p-0">@verification_id</p>
             <p class="m-0 p-0">@name</p>
+            <p class="m-0 p-0">@roll_number</p>
             <p class="m-0 p-0">@college</p>
             <p class="m-0 p-0">@activity</p>
             <p class="m-0 p-0">@track</p>

@@ -58,6 +58,33 @@ class dashboardController extends Controller
         }
         return view('pages.dashboard.dashboard')->with("data", $data);
     }
+
+    public function downloadIds(Request $request){
+        $rows = CertificateDetails::where("client", $request->input('client'))->where("activity", $request->input('activity'))->get(["name", "verification_id"]);
+        
+        $columnNames = array("Name", "Verification Id");
+        $fileName = $request->input('client')."-".$request->input("activity")."-verification-ids";
+
+        $headers = [
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=" . $fileName,
+            "Pragma" => "no-cache",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Expires" => "0"
+        ];
+        $callback = function() use ($columnNames, $rows ) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columnNames);
+            foreach ($rows as $row) {
+                $name = $row['name'];
+                $verification_id = $row['verification_id'];
+                fputcsv($file, array($name, $verification_id));
+            }
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
     // ------ End Dashboard ------ 
 
     // Help Section
@@ -350,6 +377,7 @@ class dashboardController extends Controller
 
         // Check if the uploaded filename is certificate_details 
         $filename = $request->file('certificate_details')->getClientOriginalName();
+        // ddd($filename);
         if($filename != "certificate_details.csv"){
             return view('pages.dashboard.upload')->with('info', "Please download and use the predefined CSV structure below")->with("templates", $templates);
         }
@@ -365,78 +393,75 @@ class dashboardController extends Controller
         // create an array from uploaded csv file data 
         $csvAsArray = array_map('str_getcsv', file($filename));
 
-        if(sizeof($csvAsArray[0]) == 10){
-            if($csvAsArray[0][0] == 'Name' && $csvAsArray[0][1] == 'Gender' && $csvAsArray[0][2] == 'Email' && $csvAsArray[0][3] == 'Mobile Number' && $csvAsArray[0][4] == 'College' && $csvAsArray[0][5] == 'Track' && $csvAsArray[0][6] == 'Start Date' && $csvAsArray[0][7] == 'End Date' && $csvAsArray[0][8] == 'Issued Date' && $csvAsArray[0][9] == 'Percentage'){
-                array_shift($csvAsArray);
-                foreach($csvAsArray as $csv_data){
-    
-                    if(empty($csv_data[2])){
-                        return view('pages.dashboard.upload')->with("info", "Some email fields are empty. Email is mandatary");
-                    }
-    
-                    // Replace any of the field to Null if it is empty
-                    for($i = 0; $i < sizeof($csv_data); $i++){
-                        if(empty($csv_data[$i])){
-                            $csv_data[$i] = Null;
-                        }
-                    }
-    
-                    $client = ucwords(strtolower($request->client));
-                    $issued_by = ucwords(strtolower($request->issued_by));
-                    $email = $csv_data['2'];
-                    $activity = ucwords(strtolower($request->activity));
-    
-                    // Check if record already exists in the database
-                    $query_values = ["client" => $client, "issued_by" => $issued_by, "email" => $email, "activity" => $activity];
-                    $check =  CertificateDetails::where($query_values)->get()->count();
-                    
-                    // Add the data only if the record doesn't exist in the database
-                    if($check == 0){
-                        $name = ucwords(strtolower($csv_data['0']));
-    
-                        $verification_id = "";
-                        $check_verification_id = 1;
-    
-                        // Check if the verification id has already been used
-                        while($check_verification_id != 0){
-                            $verification_id = $this->getToken(8);
-                            $check_verification_id = CertificateDetails::where("verification_id", $verification_id)->get()->count();
-                        }
-                        
-                        $gender = ucwords(strtolower($csv_data['1']));
-                        $mobile_number = $csv_data['3'];
-                        $college = ucwords(strtolower($csv_data['4']));
-                        $track = ucwords(strtolower($csv_data['5']));
-                        $start_date = $csv_data['6'];
-                        $end_date = $csv_data['7'];
-                        $issued_date = $csv_data['8'];
-                        $percentage = $csv_data['9'];
-    
-                        // Check if % is present in the percentage string
-                        $symbol = substr($percentage, -1);
-                        if($symbol != '%'){
-                            $percentage = $percentage."%";
-                        }
-    
-                        $template_name = $request->template_name;
-    
-                        $query = ['client'=>$client, 'activity'=>$activity, 'verification_id'=>$verification_id, 'name'=>$name, 'gender'=>$gender, 'email'=>$email, 'mobile_number'=>$mobile_number, 'college'=>$college, 'track'=>$track, 'start_date'=>$start_date, 'end_date'=>$end_date, 'issued_date'=>$issued_date, 'percentage'=>$percentage, 'template'=>$template_name, "issued_by"=>$issued_by];
-    
-                        $status = CertificateDetails::insert($query);
-    
-                        if($status == 1){
-                            $count += 1;
-                        }
+        if($csvAsArray[0][0] == 'Name' && $csvAsArray[0][1] == 'Gender' && $csvAsArray[0][2] == 'Email' && $csvAsArray[0][3] == 'Mobile Number' && $csvAsArray[0][4] == 'College' && $csvAsArray[0][5] == 'Track' && $csvAsArray[0][6] == 'Start Date' && $csvAsArray[0][7] == 'End Date' && $csvAsArray[0][8] == 'Issued Date' && $csvAsArray[0][9] == 'Percentage' && $csvAsArray[0][10] == 'Roll Number'){
+            array_shift($csvAsArray);
+            foreach($csvAsArray as $csv_data){
+
+                if(empty($csv_data[2])){
+                    return view('pages.dashboard.upload')->with("info", "Some email fields are empty. Email is mandatary");
+                }
+
+                // Replace any of the field to Null if it is empty
+                for($i = 0; $i < sizeof($csv_data); $i++){
+                    if(empty($csv_data[$i])){
+                        $csv_data[$i] = Null;
                     }
                 }
-            }
-            else{
-                return view('pages.dashboard.upload')->with('info', "Please download and use the predefined <strong>CSV</strong> file given below")->with("templates", $templates);
+
+                $client = ucwords(strtolower($request->client));
+                $issued_by = ucwords(strtolower($request->issued_by));
+                $email = $csv_data['2'];
+                $activity = ucwords(strtolower($request->activity));
+
+                // Check if record already exists in the database
+                $query_values = ["client" => $client, "issued_by" => $issued_by, "email" => $email, "activity" => $activity];
+                $check =  CertificateDetails::where($query_values)->get()->count();
+                
+                // Add the data only if the record doesn't exist in the database
+                if($check == 0){
+                    $name = ucwords(strtolower($csv_data['0']));
+
+                    $verification_id = "";
+                    $check_verification_id = 1;
+
+                    // Check if the verification id has already been used
+                    while($check_verification_id != 0){
+                        $verification_id = $this->getToken(8);
+                        $check_verification_id = CertificateDetails::where("verification_id", $verification_id)->get()->count();
+                    }
+                    
+                    $gender = ucwords(strtolower($csv_data['1']));
+                    $mobile_number = $csv_data['3'];
+                    $college = ucwords(strtolower($csv_data['4']));
+                    $track = ucwords(strtolower($csv_data['5']));
+                    $start_date = $csv_data['6'];
+                    $end_date = $csv_data['7'];
+                    $issued_date = $csv_data['8'];
+                    $percentage = $csv_data['9'];
+                    $roll_number = $csv_data['10'];
+
+                    // Check if % is present in the percentage string
+                    $symbol = substr($percentage, -1);
+                    if($symbol != '%'){
+                        $percentage = $percentage."%";
+                    }
+
+                    $template_name = $request->template_name;
+
+                    $query = ['client'=>$client, 'activity'=>$activity, 'verification_id'=>$verification_id, 'name'=>$name, 'gender'=>$gender, 'email'=>$email, 'mobile_number'=>$mobile_number, 'college'=>$college, 'track'=>$track, 'start_date'=>$start_date, 'end_date'=>$end_date, 'issued_date'=>$issued_date, 'percentage'=>$percentage, 'template'=>$template_name, 'issued_by'=>$issued_by, 'roll_number'=>$roll_number];
+
+                    $status = CertificateDetails::insert($query);
+
+                    if($status == 1){
+                        $count += 1;
+                    }
+                }
             }
         }
         else{
             return view('pages.dashboard.upload')->with('info', "Please download and use the predefined <strong>CSV</strong> file given below")->with("templates", $templates);
         }
+        
         
         return view('pages.dashboard.upload')->with('success', "Successfully inserted <strong>".$count."rows</strong>")->with("templates", $templates);
     }
@@ -708,6 +733,7 @@ class dashboardController extends Controller
     
                 foreach($records as $record){
                     $record = json_decode(json_encode($record));
+                    // ddd($record);
                     BulkDownload::dispatch($record, $session_key);
                 }
                 ZipAndMailFiles::dispatch($session_key, auth()->user()->email)->delay(now()->addMinutes($minutes));

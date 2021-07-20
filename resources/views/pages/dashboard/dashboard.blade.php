@@ -54,14 +54,25 @@
                         <th>Client</th>
                         <th>Activity</th>
                         <th>No of Certificates</th>
+                        <th>Download Id's</th>
                     </tr>
                 </thead>
                     @foreach($data as $d)
                         @if($d['count'] != 0)
                             <tr>
-                                <td>{{$d['client']}}</td>
-                                <td>{{$d['activity']}}</td>
-                                <td>{{$d['count']}}</td>
+                                <td class="align-middle">{{$d['client']}}</td>
+                                <td class="align-middle">{{$d['activity']}}</td>
+                                <td class="align-middle">{{$d['count']}}</td>
+                                <th>
+                                    <form action="/dashboard/downloadIds" method="GET">
+                                        @csrf
+                                        <button class="btn btn-none btn-outline-none">
+                                            <i class="fas fa-file-download text-warning" style="font-size: 1.5rem;"></i>
+                                        </button>
+                                        <input type="hidden" name="client" value="{{ $d['client'] }}">
+                                        <input type="hidden" name="activity" value="{{ $d['activity'] }}">
+                                    </form>
+                                </th>
                             </tr>
                         @endif
                     @endforeach

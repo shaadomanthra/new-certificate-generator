@@ -36,7 +36,7 @@ class Template{
 
         // ----- Find and Replace -----
 
-        $replace = ["activity", "verification_id", "name", "gender", "email", "mobile_number", "college", "track", "start_date", "end_date", "issued_date", "percentage"];
+        $replace = ["activity", "verification_id", "name", "gender", "email", "mobile_number", "college", "track", "start_date", "end_date", "issued_date", "percentage", "roll_number"];
 
         foreach($data as $k => $v){
             foreach($replace as $r){
@@ -157,6 +157,7 @@ class Template{
         $signatures_location  = Storage::disk('signatures')->getDriver()->getAdapter()->getPathPrefix();
         $fonts_location  = Storage::disk('fonts')->getDriver()->getAdapter()->getPathPrefix();
 
+        // ddd($data);
         
         $img = Image::make($default_conf_location."assets/designs/template_1.jpg");
 
@@ -200,7 +201,7 @@ class Template{
 
         // ----- Find and Replace -----
         
-        $replace = ["activity", "verification_id", "name", "gender", "email", "mobile_number", "college", "track", "start_date", "end_date", "issued_date", "percentage"];
+        $replace = ["activity", "verification_id", "name", "gender", "email", "mobile_number", "college", "track", "start_date", "end_date", "issued_date", "percentage", "roll_number"];
         
         foreach($data as $k => $v){
             foreach($replace as $r){
@@ -457,7 +458,7 @@ class Template{
 
         // ----- Find and Replace -----
         
-        $replace = ["activity", "verification_id", "name", "gender", "email", "mobile_number", "college", "track", "start_date", "end_date", "issued_date", "percentage"];
+        $replace = ["activity", "verification_id", "name", "gender", "email", "mobile_number", "college", "track", "start_date", "end_date", "issued_date", "percentage", "roll_number"];
         
         foreach($data as $k => $v){
             foreach($replace as $r){
@@ -739,7 +740,7 @@ class Template{
         
         // ----- Find and Replace -----
         
-        $replace = ["activity", "verification_id", "name", "gender", "email", "mobile_number", "college", "track", "start_date", "end_date", "issued_date", "percentage"];
+        $replace = ["activity", "verification_id", "name", "gender", "email", "mobile_number", "college", "track", "start_date", "end_date", "issued_date", "percentage", "roll_number"];
         
         foreach($data as $k => $v){
             foreach($replace as $r){

@@ -37,7 +37,7 @@
         </div>
     @elseif($info ?? "")
         <div class="container mt-4 text-center bg-dark text-white rounded-lg p-4">
-            <h3 class="text-danger">{{$info}}</h3>
+            <h3 class="text-warning">{{$info}}</h3>
             <a href="/" class="btn btn-light mt-3">Back to Home</a>
         </div>
     @endif

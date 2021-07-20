@@ -8,9 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
 class CertificateDetails extends Model
-{
-    protected $table = 'certificate_details';
-    
+{    
     // public function generate_certificate($data){
     //     ob_start();
     //     $data = json_decode($data);
