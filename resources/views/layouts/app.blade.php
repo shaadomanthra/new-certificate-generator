@@ -16,7 +16,7 @@
     <meta property="og:title" content="Xplore - The Best Assessment Platform">
     <meta property="og:description" content="The best repository for placement papers and aptitude questions for infosys, tcs nqt,tcs ninja, tcs digital, amcat, cocubes, accenture, cognizant, wipro and many more ">
     <meta property="og:image" content="">
-    <link rel="shortcut icon" href="https://xplore.co.in/favicon.ico">
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
